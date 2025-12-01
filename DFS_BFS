@@ -1,0 +1,180 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define MAX_VERTICES 100
+
+struct Node {
+    int vertex;
+    struct Node* next;
+};
+
+struct Graph {
+    int numVertices;
+    struct Node** adjLists;
+    bool visited[MAX_VERTICES];
+};
+
+struct Node* createNode(int v) {
+    struct Node* newNode = malloc(sizeof(struct Node));
+    newNode->vertex = v;
+    newNode->next = NULL;
+    return newNode;
+}
+
+struct Graph* createGraph(int numVertices) {
+    struct Graph* graph = malloc(sizeof(struct Graph));
+    graph->numVertices = numVertices;
+
+    graph->adjLists = malloc(numVertices * sizeof(struct Node*));
+
+    for (int i = 0; i < numVertices; i++) {
+        graph->adjLists[i] = NULL;
+        graph->visited[i] = false;
+    }
+    return graph;
+}
+
+void addEdge(struct Graph* graph, int src, int dest) {
+    // src -> dest
+    struct Node* newNode = createNode(dest);
+
+    if (graph->adjLists[src] == NULL)
+        graph->adjLists[src] = newNode;
+    else {
+        struct Node* t = graph->adjLists[src];
+        while (t->next != NULL)
+            t = t->next;
+        t->next = newNode;
+    }
+
+    // undirected (dest -> src)
+    newNode = createNode(src);
+
+    if (graph->adjLists[dest] == NULL)
+        graph->adjLists[dest] = newNode;
+    else {
+        struct Node* t = graph->adjLists[dest];
+        while (t->next != NULL)
+            t = t->next;
+        t->next = newNode;
+    }
+}
+
+void sortAdjLists(struct Graph* graph) {
+    for (int v = 0; v < graph->numVertices; v++) {
+
+        int arr[100];
+        int count = 0;
+
+        struct Node* temp = graph->adjLists[v];
+        while (temp != NULL) {
+            arr[count++] = temp->vertex;
+            temp = temp->next;
+        }
+
+        // sort
+        for (int i = 0; i < count - 1; i++)
+            for (int j = i + 1; j < count; j++)
+                if (arr[i] > arr[j]) {
+                    int t = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = t;
+                }
+
+        // rebuild linked list
+        struct Node* head = NULL;
+        struct Node* tail = NULL;
+
+        for (int i = 0; i < count; i++) {
+            struct Node* newNode = createNode(arr[i]);
+            if (head == NULL)
+                head = tail = newNode;
+            else {
+                tail->next = newNode;
+                tail = newNode;
+            }
+        }
+
+        graph->adjLists[v] = head;
+    }
+}
+
+void resetVisited(struct Graph* graph) {
+    for (int i = 0; i < graph->numVertices; i++)
+        graph->visited[i] = false;
+}
+
+void DFS(struct Graph* graph, int start) {
+    graph->visited[start] = true;
+    printf("%d ", start);
+
+    struct Node* temp = graph->adjLists[start];
+
+    while (temp != NULL) {
+        int next = temp->vertex;
+        if (!graph->visited[next])
+            DFS(graph, next);
+        temp = temp->next;
+    }
+}
+
+void BFS(struct Graph* graph, int start) {
+    int queue[1000];
+    int front = 0, rear = 0;
+
+    graph->visited[start] = true;
+    queue[rear++] = start;
+
+    while (front < rear) {
+        int current = queue[front++];
+        printf("%d ", current);
+
+        struct Node* temp = graph->adjLists[current];
+        while (temp != NULL) {
+            if (!graph->visited[temp->vertex]) {
+                graph->visited[temp->vertex] = true;
+                queue[rear++] = temp->vertex;
+            }
+            temp = temp->next;
+        }
+    }
+}
+
+int main() {
+    int num_vertices;
+    int start_vertex;
+
+    printf("ป้อนจำนวนจุดยอด : ");
+    scanf("%d", &num_vertices);
+
+    struct Graph* graph = createGraph(num_vertices);
+
+    printf("ป้อนขอบ เช่น 0 1 (พิมพ์ -1 -1 เพื่อหยุด)\n");
+
+    int u, v;
+    while (1) {
+        printf("   ขอบ: ");
+        scanf("%d %d", &u, &v);
+
+        if (u == -1 && v == -1) break;
+
+        if (u >= 0 && u < num_vertices && v >= 0 && v < num_vertices)
+            addEdge(graph, u, v);
+    }
+
+    sortAdjLists(graph);
+
+    printf("\nป้อนจุดยอดเริ่มต้นสำหรับ DFS: ");
+    scanf("%d", &start_vertex);
+    resetVisited(graph);
+    DFS(graph, start_vertex);
+
+    printf("\nป้อนจุดยอดเริ่มต้นสำหรับ BFS: ");
+    scanf("%d", &start_vertex);
+    resetVisited(graph);
+    BFS(graph, start_vertex);
+
+    printf("\n");
+    return 0;
+}
