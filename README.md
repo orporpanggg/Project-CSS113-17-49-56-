@@ -1,15 +1,11 @@
 # Project-CSS113-17-49-56-
 Project Assignment (ของวิชา CSS113 ปี 68 เทอม 1)
+จัดทำโดย นางสาวเพ็ญพิชชา ลิ้มไพโรจน์(68090500417), นายอชิรกรณ์ ถาวรตันติกุล (68090500456), นายชินาธิป ฮิงสาหัส(68090500449)
 Project นี้ใช้สำหรับสร้างกราฟจากข้อมูลที่ผู้ใช้กรอก และสามารถทำการค้นหาเส้นทาง หรือสร้าง Minimum Spanning Tree ได้หลายแบบ ได้แก่
-
 1. BFS (Breadth-First Search)
-
 2. DFS (Depth-First Search)
-
 3. Dijkstra (Shortest Path)
-
 4. Prim (Minimum Spanning Tree)
-
 5. Kruskal (Minimum Spanning Tree)
 
 วิธีการกรอกข้อมูลกราฟของการหาแบบ DFS,BFS
