@@ -45,7 +45,80 @@ Project นี้ใช้สำหรับสร้างกราฟจาก
 0 1 2 3 4
 
 วิธีการกรอกข้อมูลกราฟของการหาแบบ Dijkstra (Shortest Path)
+1) จำนวนจุด (vertices) และจำนวนเส้นเชื่อม (edges)
+เมื่อรันโปรแกรมจะขึ้นว่า:Enter number of vertices and edges:
+ต้องใส่ตัวเลข n m เช่น:5 7
 
-วิธีการกรอกข้อมูลกราฟของการหาแบบ Prim (Minimum Spanning Tree)
+3) รายการเส้นเชื่อมของกราฟ
+โปรแกรมจะขึ้นว่า:Enter edges (u v w):
+ต้องป้อนทีละบรรทัด: u v w
+(หมายถึงเส้นเชื่อมจากจุด u → v มีน้ำหนัก w)
+(ใส่จำนวนบรรทัดตามค่าของ m)
 
-วิธีการกรอกข้อมูลกราฟของการหาแบบ Kruskal (Minimum Spanning Tree)
+4) จุดเริ่มต้น (source) และจุดปลายทาง (destination)
+โปรแกรมจะถามว่า:Enter source and destination (1..n):
+ป้อนเป็น เช่น:1 4
+(แปลว่า หา shortest path จาก จุด 1 ไปจุด 4)
+
+ตัวอย่าง input ครบชุด
+Enter number of vertices and edges:
+5 7
+Enter edges (u v w):
+1 2 4
+1 3 2
+2 3 5
+2 4 10
+3 5 3
+5 4 4
+4 5 1
+Enter source and destination (1..n):
+1 4
+
+ผลลัพธ์ที่จะได้ 
+Shortest distance = 9.000000
+Path: 1 -> 3 -> 5 -> 4
+
+วิธีการกรอกข้อมูลกราฟของการหาแบบ Kruskal และ Prim (Minimum Spanning Tree)
+เมื่อรันโปรแกรม จะขึ้นว่า:
+Enter number of vertices:
+ให้ใส่จำนวนจุด เช่น 5
+
+จากนั้น:Enter number of edges:
+ให้ใส่จำนวนเส้นเชื่อม เช่น 7
+
+ต่อไปโปรแกรมจะถาม:Enter edges (src, dest, weight):
+ให้กรอกข้อมูลเส้นเชื่อมในรูปแบบ:u v w
+(u = จุดเริ่ม (0-based index)
+v = จุดปลาย (0-based index)
+w = น้ำหนักขอบ)
+
+ตัวอย่าง Input ครบชุด
+Enter number of vertices: 5
+Enter number of edges: 7
+Enter edges (src, dest, weight):
+0 1 4
+0 2 2
+1 2 5
+1 3 10
+2 4 3
+4 3 4
+3 4 1
+
+ตัวอย่าง Output ที่ควรได้ 
+Kruskal’s MST
+Edges in the MST
+3 -- 4 == 1
+0 -- 2 == 2
+2 -- 4 == 3
+0 -- 1 == 4
+
+Total Weight of MST: 10
+
+Prim’s MST
+Edges in the MST
+0 -- 2 == 2
+2 -- 4 == 3
+4 -- 3 == 1
+0 -- 1 == 4
+
+Total Weight of MST: 10
